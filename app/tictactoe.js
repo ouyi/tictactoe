@@ -36,7 +36,3 @@ tictactoe.Player = function(symbol) {
     this.symbol = symbol;
 }
 
-/*
-exports.Game = tictactoe.Game;
-exports.Player = tictactoe.Player;
-*/
