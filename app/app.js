@@ -20,6 +20,7 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
            
             function initBoard(element) {
                 var rowCount = 3;
+                var colCount = 3;
                 var borderSize = 5;
                 var symbolRatio = 0.7;
                 // element.width and element.height can not be used because they are not stable
@@ -27,7 +28,7 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                 var boardHeight = scope.board.height;
                 var cellLengthX = boardWidth / rowCount;
                 var cellLengthY = boardHeight / rowCount;
-                scope.game = new tictactoe.Game(rowCount);
+                scope.game = new tictactoe.Game(rowCount, colCount);
 
                 if (!scope.paper) {
                     scope.paper = new paper.PaperScope();
