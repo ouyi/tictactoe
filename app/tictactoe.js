@@ -39,22 +39,4 @@ tictactoe.Player = function(symbol) {
 /*
 exports.Game = tictactoe.Game;
 exports.Player = tictactoe.Player;
-
-
-// not sure why the following does not work
-
-var tictactoe = (function() {
-
-    var Game = function(size) {
-        this.size = size;
-    };
-
-    Game.prototype.isValidMove = function(x, y) {
-        return (x >= 0 && x < this.size) && (y >= 0 && y < this.size);
-    };
-
-    return {
-        Game: Game
-    }
-})();
 */
