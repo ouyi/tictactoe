@@ -1,9 +1,5 @@
 'use strict';
 
-//var chai = require('chai');
-//var expect = chai.expect; // we are using the "expect" style of Chai
-//var tictactoe = require("../tictactoe.js");
-
 describe('tictactoe isValidMove boundary check', function() {
     it('shall return false if a move exceeds boundary', function() {
         var game = new tictactoe.Game(3);
