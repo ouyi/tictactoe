@@ -1,0 +1,13 @@
+{
+  "name": "tictactoe",
+  "description": "FreeCodeCamp TicTacToe Game",
+  "version": "1.0.0",
+  "homepage": "https://www.freecodecamp.com/ouyi",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.5.0",
+    "bootstrap": "~3.3.7",
+    "paper": "^0.10.2"
+  }
+}

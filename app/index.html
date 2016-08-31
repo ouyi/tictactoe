@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="tictactoe">
+<head>
+    <link rel="stylesheet" href="app.css">
+</head>
+<body ng-controller="MainCtrl">
+
+    <div class="centered">
+        <div>
+            <button ng-click="board.reset()" >Reset</button>
+        </div>
+        <div>
+            <canvas id="boardCanvas" t3board width="500" height="500"></canvas>
+        </div>
+    </div>
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="bower_components/paper/dist/paper-full.min.js"></script>
+    <script type="text/javascript" src="tictactoe.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+</body>
+</html>
