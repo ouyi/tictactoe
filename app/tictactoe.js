@@ -2,6 +2,10 @@
 
 var tictactoe = tictactoe || {};
 
+tictactoe.Player = function(symbol) {
+    this.symbol = symbol;
+}
+
 tictactoe.Move = function(x, y, player) {
     this.x = x;
     this.y = y;
@@ -9,6 +13,7 @@ tictactoe.Move = function(x, y, player) {
 }
 
 tictactoe.Game = function(rowCount, colCount) {
+    this.goalLength = 3;
     this.rowCount = rowCount;
     this.colCount = colCount;
     this.player1 = new tictactoe.Player('x');
@@ -37,13 +42,65 @@ tictactoe.Game.prototype = {
             this.moves.push(new tictactoe.Move(x, y, player));
             // TODO: check win / lose / draw
             // TODO: check or change gameOver
-
+            this.board[x][y] = player;
             this.currentPlayer = (player === this.player1 ? this.player2 : this.player1);
         }
-    }
-};
+    },
+    hasWon: function(move) {
 
-tictactoe.Player = function(symbol) {
-    this.symbol = symbol;
-}
+        var sequences = [];
+        // horizontal
+        sequences.push(this.board[move.x]);
+        // vertical
+        sequences.push(this.board.map(function(value,index) { return value[move.y]; }));
+        // diagonal \
+        sequences.push(this.getDiagonalBackSlash(move.x, move.y));
+        // diagonal /
+        sequences.push(this.getDiagonalSlash(move.x, move.y));
+
+        for (var i = 0; i < sequences.length; i++) {
+            var count = 0;
+            for (var j = 0; j < sequences[i].length; j++) {
+                if (sequences[i][j] === move.player) {
+                    count ++;
+                    if (count === this.goalLength) {
+                        return true;
+                    }
+                } else {
+                    count = 0;
+                }
+            }
+        }
+        return false;
+    },
+    getDiagonalBackSlash: function(x, y) {
+   
+        var res = []; 
+        var i = x - Math.max(this.rowCount, this.colCount) + 1;
+        var j = y - Math.max(this.rowCount, this.colCount) + 1;
+        while(i < this.rowCount && j < this.colCount) {
+            if (i >= 0 && j >= 0) {
+                res.push(this.board[i][j]); 
+            } 
+            i++;
+            j++;
+        }
+        return res;
+    },
+    getDiagonalSlash: function(x, y) {
+   
+        var res = []; 
+        var i = x - Math.max(this.rowCount, this.colCount) + 1;
+        var j = y + Math.max(this.rowCount, this.colCount) - 1;
+        while(i < this.rowCount && j >= 0 ) {
+            if (i >= 0 && j < this.colCount) {
+                res.push(this.board[i][j]); 
+            } 
+            i++;
+            j--;
+        }
+        return res;
+    }
+
+};
 
