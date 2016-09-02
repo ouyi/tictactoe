@@ -13,9 +13,9 @@ tictactoe.Move = function(x, y, player) {
 }
 
 tictactoe.Game = function(rowCount, colCount) {
-    this.goalLength = 3;
     this.rowCount = rowCount;
     this.colCount = colCount;
+    this.goalLength = 3;
     this.player0 = new tictactoe.Player('o');
     this.player1 = new tictactoe.Player('x');
     this.currentPlayer = this.player1;
@@ -23,12 +23,26 @@ tictactoe.Game = function(rowCount, colCount) {
     this.winner = undefined;
     this.gameOver = false;
     this.isDraw = false;
-    this.board = new Array(rowCount);
-    for (var i = 0; i < rowCount; i++) {
-        this.board[i] = new Array(colCount);
+    this.board = new Array(this.rowCount);
+    for (var i = 0; i < this.rowCount; i++) {
+        this.board[i] = new Array(this.colCount);
     }
 };
 tictactoe.Game.prototype = { 
+    reset: function() {
+        this.goalLength = 3;
+        this.player0 = new tictactoe.Player('o');
+        this.player1 = new tictactoe.Player('x');
+        this.currentPlayer = this.player1;
+        this.moves = [];
+        this.winner = undefined;
+        this.gameOver = false;
+        this.isDraw = false;
+        this.board = new Array(this.rowCount);
+        for (var i = 0; i < this.rowCount; i++) {
+            this.board[i] = new Array(this.colCount);
+        }
+    },
     isValidMove: function(x, y) {
         if (this.gameOver) {
             return false;

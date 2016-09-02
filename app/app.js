@@ -6,6 +6,7 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
 
     var boardCanvas = angular.element( document.querySelector( '#boardCanvas' ) )[0];
     scope.board = {
+        timeToStart: 5000,
         width: boardCanvas.width,
         height: boardCanvas.height,
         borderSize: 5,
@@ -20,7 +21,7 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
 
 }]);
 
-app.directive('t3board', ['$log', function(logger) { 
+app.directive('t3board', ['$timeout', '$log', function(timer, logger) { 
     return {
         restrict: 'A',
         scope: false,
@@ -68,7 +69,7 @@ app.directive('t3board', ['$log', function(logger) {
                         scope.$apply(function() {
                             game.addMove(cellX, cellY, game.currentPlayer);
                             if (game.gameOver) {
-                                // TODO game.reset();
+                                timer(scope.reset, board.timeToStart);
                             }
                         });
                     } else {
