@@ -16,8 +16,8 @@ tictactoe.Game = function(rowCount, colCount) {
     this.goalLength = 3;
     this.rowCount = rowCount;
     this.colCount = colCount;
+    this.player0 = new tictactoe.Player('o');
     this.player1 = new tictactoe.Player('x');
-    this.player2 = new tictactoe.Player('o');
     this.currentPlayer = this.player1;
     this.moves = [];
     this.gameOver = false;
@@ -51,7 +51,7 @@ tictactoe.Game.prototype = {
             } else if (this.moves.length == this.rowCount * this.colCount) {
                 this.gameOver = true;
             }
-            this.currentPlayer = (player === this.player1 ? this.player2 : this.player1);
+            this.currentPlayer = (player === this.player1 ? this.player0 : this.player1);
         }
     },
     hasWon: function(move) {

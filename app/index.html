@@ -7,7 +7,10 @@
 
     <div class="centered">
         <div>
-            <span ng-hide="board.winner">Current player: {{board.currentPlayer}}</span> <span ng-show="board.winner">Winner: {{board.winner}}</span> <button ng-click="board.reset()" >Reset</button>
+            <span ng-hide="board.gameOver">Current player: {{board.currentPlayer}}</span> 
+            <span ng-show="board.winner">Winner: {{board.winner}}</span> 
+            <span ng-show="board.isDraw">It is a draw!</span> 
+            <button ng-click="board.reset()" >Reset</button>
         </div>
         <div>
             <canvas id="boardCanvas" t3board width="500" height="500"></canvas>

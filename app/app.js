@@ -9,6 +9,8 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
         width: boardCanvas.width,
         height: boardCanvas.height,
         winner: undefined,
+        isDraw: false,
+        gameOver: false,
         currentPlayer: undefined
     };
 
@@ -86,6 +88,8 @@ app.directive('t3board', ['$log', function(logger) {
                             if (scope.game.winner) {
                                 scope.board.winner = scope.game.winner.symbol;
                             }
+                            scope.board.isDraw = (scope.game.winner === undefined && scope.game.gameOver);
+                            scope.board.gameOver = scope.game.gameOver;
                         });
                     } else {
                         logger.log(cellX);
