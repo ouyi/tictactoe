@@ -20,8 +20,9 @@ tictactoe.Game = function(rowCount, colCount) {
     this.player1 = new tictactoe.Player('x');
     this.currentPlayer = this.player1;
     this.moves = [];
-    this.gameOver = false;
     this.winner = undefined;
+    this.gameOver = false;
+    this.isDraw = false;
     this.board = new Array(rowCount);
     for (var i = 0; i < rowCount; i++) {
         this.board[i] = new Array(colCount);
@@ -46,10 +47,11 @@ tictactoe.Game.prototype = {
             this.moves.push(move);
             this.board[x][y] = move.player;
             if(this.hasWon(move)) {
-                this.winner = move.player; 
                 this.gameOver = true;
+                this.winner = move.player; 
             } else if (this.moves.length == this.rowCount * this.colCount) {
                 this.gameOver = true;
+                this.isDraw = true;
             }
             this.currentPlayer = (player === this.player1 ? this.player0 : this.player1);
         }

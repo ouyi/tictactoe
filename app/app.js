@@ -8,10 +8,6 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
     scope.board = {
         width: boardCanvas.width,
         height: boardCanvas.height,
-        winner: undefined,
-        isDraw: false,
-        gameOver: false,
-        currentPlayer: undefined
     };
 
 }]);
@@ -19,12 +15,13 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
 app.directive('t3board', ['$log', function(logger) { 
     return {
         restrict: 'A',
-        scope: true,
+        scope: false,
         link: function(scope, element) {
-           
+
             function initBoard(element) {
-                var rowCount = 3;
-                var colCount = 3;
+                scope.game = new tictactoe.Game(3, 3);
+                var rowCount = scope.game.rowCount;
+                var colCount = scope.game.colCount;
                 var borderSize = 5;
                 var symbolRatio = 0.7;
                 // element.width and element.height can not be used because they are not stable
@@ -32,7 +29,6 @@ app.directive('t3board', ['$log', function(logger) {
                 var boardHeight = scope.board.height;
                 var cellLengthX = boardWidth / rowCount;
                 var cellLengthY = boardHeight / rowCount;
-                scope.game = new tictactoe.Game(rowCount, colCount);
 
                 if (!scope.paper) {
                     scope.paper = new paper.PaperScope();
@@ -72,24 +68,16 @@ app.directive('t3board', ['$log', function(logger) {
                     };
                 }
 
-                var tool = new paper.Tool();
-                tool.onMouseDown = function(event) {
+                new paper.Tool().onMouseDown = function(event) {
                     logger.log(event.point);
                     var cellX = Math.floor((event.point.x - borderSize) / cellLengthX);
                     var cellY = Math.floor((event.point.y - borderSize) / cellLengthY);
                     logger.log(cellX);
                     logger.log(cellY);
                     if (scope.game.isValidMove(cellX, cellY)) {
-                        var player = scope.game.currentPlayer;
-                        scope.game.addMove(cellX, cellY, player);
-                        makeSymbol((cellX + 0.5) * cellLengthX, (cellY + 0.5) * cellLengthY, player.symbol);
+                        makeSymbol((cellX + 0.5) * cellLengthX, (cellY + 0.5) * cellLengthY, scope.game.currentPlayer.symbol);
                         scope.$apply(function() {
-                            scope.board.currentPlayer = scope.game.currentPlayer.symbol;
-                            if (scope.game.winner) {
-                                scope.board.winner = scope.game.winner.symbol;
-                            }
-                            scope.board.isDraw = (scope.game.winner === undefined && scope.game.gameOver);
-                            scope.board.gameOver = scope.game.gameOver;
+                            scope.game.addMove(cellX, cellY, scope.game.currentPlayer);
                         });
                     } else {
                         logger.log(cellX);
@@ -99,14 +87,11 @@ app.directive('t3board', ['$log', function(logger) {
 
                 paper.view.draw();
             };
-
-            scope.board.reset = function() {
-                logger.log("Resetting");
-                initBoard(element[0]);
-                this.winner = undefined;
-            };
             
-            initBoard(element[0]);
+            scope.reset = function() {
+                initBoard(element[0]);
+            }
+            scope.reset();
         }
     };
 }]);
