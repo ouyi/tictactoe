@@ -18,25 +18,12 @@ app.directive('t3board', ['$log', function(logger) {
         scope: false,
         link: function(scope, element) {
 
-            function initBoard(element) {
-                scope.game = new tictactoe.Game(3, 3);
-                var rowCount = scope.game.rowCount;
-                var colCount = scope.game.colCount;
+            function initBoard(paper, tool, boardWidth, boardHeight, game) {
                 var borderSize = 5;
                 var symbolRatio = 0.7;
                 // element.width and element.height can not be used because they are not stable
-                var boardWidth = scope.board.width;
-                var boardHeight = scope.board.height;
-                var cellLengthX = boardWidth / rowCount;
-                var cellLengthY = boardHeight / rowCount;
-
-                if (!scope.paper) {
-                    scope.paper = new paper.PaperScope();
-                    // it seems that this line changes the element width and height
-                    scope.paper.setup(element);
-                }
-                paper = scope.paper;
-                paper.project.activeLayer.removeChildren();
+                var cellLengthX = boardWidth / game.colCount;
+                var cellLengthY = boardHeight / game.rowCount;
 
                 function makeLine(x1, y1, x2, y2) {
                     var vector = new paper.Point(borderSize, borderSize);
@@ -46,10 +33,12 @@ app.directive('t3board', ['$log', function(logger) {
                     path.strokeColor = 'black';
                 };
 
-                for (var i = 1; i < rowCount; i++) {
-                    // horizontal
+                // horizontal
+                for (var i = 1; i < game.rowCount; i++) {
                     makeLine(0, i * cellLengthY, boardWidth, i * cellLengthY);
-                    // vertical
+                }
+                // vertical
+                for (var i = 1; i < game.colCount; i++) {
                     makeLine(i * cellLengthX, 0, i * cellLengthX, boardHeight);
                 }
 
@@ -68,16 +57,20 @@ app.directive('t3board', ['$log', function(logger) {
                     };
                 }
 
-                new paper.Tool().onMouseDown = function(event) {
+                // init tool once so that event handling works after reset without being hidden by the previous tool 
+                tool.onMouseDown = function(event) {
                     logger.log(event.point);
                     var cellX = Math.floor((event.point.x - borderSize) / cellLengthX);
                     var cellY = Math.floor((event.point.y - borderSize) / cellLengthY);
                     logger.log(cellX);
                     logger.log(cellY);
-                    if (scope.game.isValidMove(cellX, cellY)) {
-                        makeSymbol((cellX + 0.5) * cellLengthX, (cellY + 0.5) * cellLengthY, scope.game.currentPlayer.symbol);
+                    if (game.isValidMove(cellX, cellY)) {
+                        makeSymbol((cellX + 0.5) * cellLengthX, (cellY + 0.5) * cellLengthY, game.currentPlayer.symbol);
                         scope.$apply(function() {
-                            scope.game.addMove(cellX, cellY, scope.game.currentPlayer);
+                            game.addMove(cellX, cellY, game.currentPlayer);
+                            if (game.gameOver) {
+                                // TODO game.reset();
+                            }
                         });
                     } else {
                         logger.log(cellX);
@@ -89,7 +82,16 @@ app.directive('t3board', ['$log', function(logger) {
             };
             
             scope.reset = function() {
-                initBoard(element[0]);
+                if (!scope.paper) {
+                    scope.paper = new paper.PaperScope();
+                    // it seems that this line changes the element width and height
+                    scope.paper.setup(element[0]);
+                    scope.tool = new paper.Tool();
+                }
+                scope.paper.project.activeLayer.removeChildren();
+                scope.game = new tictactoe.Game(3, 3);
+
+                initBoard(scope.paper, scope.tool, scope.board.width, scope.board.height, scope.game);
             }
             scope.reset();
         }
