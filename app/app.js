@@ -7,12 +7,14 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
     var boardCanvas = angular.element( document.querySelector( '#boardCanvas' ) )[0];
     scope.board = {
         width: boardCanvas.width,
-        height: boardCanvas.height
+        height: boardCanvas.height,
+        winner: undefined,
+        currentPlayer: undefined
     };
 
 }]);
 
-app.directive('t3board', ['$timeout', '$log', function(timer, logger) { 
+app.directive('t3board', ['$log', function(logger) { 
     return {
         restrict: 'A',
         scope: true,
@@ -79,6 +81,12 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                         var player = scope.game.currentPlayer;
                         scope.game.addMove(cellX, cellY, player);
                         makeSymbol((cellX + 0.5) * cellLengthX, (cellY + 0.5) * cellLengthY, player.symbol);
+                        scope.$apply(function() {
+                            scope.board.currentPlayer = scope.game.currentPlayer.symbol;
+                            if (scope.game.winner) {
+                                scope.board.winner = scope.game.winner.symbol;
+                            }
+                        });
                     } else {
                         logger.log(cellX);
                         logger.log(cellY);
@@ -91,6 +99,7 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
             scope.board.reset = function() {
                 logger.log("Resetting");
                 initBoard(element[0]);
+                this.winner = undefined;
             };
             
             initBoard(element[0]);

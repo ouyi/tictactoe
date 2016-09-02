@@ -21,7 +21,7 @@ tictactoe.Game = function(rowCount, colCount) {
     this.currentPlayer = this.player1;
     this.moves = [];
     this.gameOver = false;
-    this.winningPlayer = undefined;
+    this.winner = undefined;
     this.board = new Array(rowCount);
     for (var i = 0; i < rowCount; i++) {
         this.board[i] = new Array(colCount);
@@ -29,6 +29,9 @@ tictactoe.Game = function(rowCount, colCount) {
 };
 tictactoe.Game.prototype = { 
     isValidMove: function(x, y) {
+        if (this.gameOver) {
+            return false;
+        }
         for (var i = 0; i < this.moves.length; i++) {
             if (this.moves[i].x === x && this.moves[i].y === y) {
                 console.log("existing");
@@ -39,10 +42,15 @@ tictactoe.Game.prototype = {
     },
     addMove: function(x, y, player) {
         if (!this.gameOver) {
-            this.moves.push(new tictactoe.Move(x, y, player));
-            // TODO: check win / lose / draw
-            // TODO: check or change gameOver
-            this.board[x][y] = player;
+            var move = new tictactoe.Move(x, y, player);
+            this.moves.push(move);
+            this.board[x][y] = move.player;
+            if(this.hasWon(move)) {
+                this.winner = move.player; 
+                this.gameOver = true;
+            } else if (this.moves.length == this.rowCount * this.colCount) {
+                this.gameOver = true;
+            }
             this.currentPlayer = (player === this.player1 ? this.player2 : this.player1);
         }
     },
