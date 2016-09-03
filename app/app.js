@@ -89,7 +89,9 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                     scope.tool = new paper.Tool();
                 }
                 scope.paper.project.activeLayer.removeChildren();
-                scope.game = new tictactoe.Game(3, 4);
+                var player0 = new tictactoe.Player('o');
+                var player1 = new tictactoe.Player('x');
+                scope.game = new tictactoe.Game(player0, player1, 3, 4);
 
                 initBoard(scope.board, scope.game, scope.paper, scope.tool);
             }

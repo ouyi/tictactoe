@@ -12,13 +12,14 @@ tictactoe.Move = function(x, y, player) {
     this.player = player;
 }
 
-tictactoe.Game = function(colCount, rowCount) {
+tictactoe.Game = function(player0, player1, colCount = 3, rowCount = 3, goalLength = 3) {
     this.colCount = colCount;
     this.rowCount = rowCount;
-    this.goalLength = 3;
-    this.player0 = new tictactoe.Player('o');
-    this.player1 = new tictactoe.Player('x');
-    this.currentPlayer = this.player1;
+    this.goalLength = goalLength;
+    this.player0 = player0;
+    this.player1 = player1;
+
+    this.currentPlayer = this.player0;
     this.moves = [];
     this.winner = undefined;
     this.gameOver = false;
@@ -30,10 +31,7 @@ tictactoe.Game = function(colCount, rowCount) {
 };
 tictactoe.Game.prototype = { 
     reset: function() {
-        this.goalLength = 3;
-        this.player0 = new tictactoe.Player('o');
-        this.player1 = new tictactoe.Player('x');
-        this.currentPlayer = this.player1;
+        this.currentPlayer = this.player0;
         this.moves = [];
         this.winner = undefined;
         this.gameOver = false;
@@ -67,7 +65,7 @@ tictactoe.Game.prototype = {
                 this.gameOver = true;
                 this.isDraw = true;
             }
-            this.currentPlayer = (player === this.player1 ? this.player0 : this.player1);
+            this.currentPlayer = this.getOpponent(player);
         }
     },
     hasWon: function(move) {
@@ -133,7 +131,9 @@ tictactoe.Game.prototype = {
             j++;
         }
         return res;
+    },
+    getOpponent: function(player) {
+        return (player === this.player1 ? this.player0 : this.player1);
     }
-
 };
 
