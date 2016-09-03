@@ -6,7 +6,8 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
 
     var boardCanvas = angular.element( document.querySelector( '#boardCanvas' ) )[0];
     scope.board = {
-        timeToStart: 5000,
+        symbol: 'o',
+        timeToStart: 3000,
         width: boardCanvas.width,
         height: boardCanvas.height,
         borderSize: 5,
@@ -18,6 +19,10 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
             justification: 'center'
         }
     };
+
+    scope.$watch('board.symbol', function(value) {
+        scope.reset();
+    });
 
 }]);
 
@@ -59,12 +64,11 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
 
                 // init tool once so that event handling works after reset without being hidden by the previous tool 
                 tool.onMouseDown = function(event) {
-                    logger.log(event.point);
                     var cellX = Math.floor((event.point.x - board.borderSize) / cellLengthX);
                     var cellY = Math.floor((event.point.y - board.borderSize) / cellLengthY);
                     logger.log(cellX);
                     logger.log(cellY);
-                    if (game.isValidMove(cellX, cellY)) {
+                    if (!game.gameOver && game.isValidMove(cellX, cellY)) {
                         makeSymbol((cellX + 0.5) * cellLengthX, (cellY + 0.5) * cellLengthY, game.currentPlayer.symbol);
                         scope.$apply(function() {
                             game.addMove(cellX, cellY, game.currentPlayer);
@@ -72,9 +76,6 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                                 timer(scope.reset, board.timeToStart);
                             }
                         });
-                    } else {
-                        logger.log(cellX);
-                        logger.log(cellY);
                     }
                 }
 
@@ -89,8 +90,8 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                     scope.tool = new paper.Tool();
                 }
                 scope.paper.project.activeLayer.removeChildren();
-                var player0 = new tictactoe.Player('o');
-                var player1 = new tictactoe.Player('x');
+                var player0 = new tictactoe.Player(scope.board.symbol);
+                var player1 = new tictactoe.Player(player0.symbol === 'o' ? 'x' : 'o');
                 scope.game = new tictactoe.Game(player0, player1, 3, 4);
 
                 initBoard(scope.board, scope.game, scope.paper, scope.tool);

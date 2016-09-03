@@ -7,6 +7,15 @@
 
     <div class="centered">
         <div>
+            <form>
+                <span>Choose your symbol</span> 
+                <label>
+                    <input type="radio" ng-model="board.symbol" value="o">O
+                </label>
+                <label>
+                    <input type="radio" ng-model="board.symbol" value="x">X
+                </label>
+            </form>
             <span ng-hide="game.gameOver">Current player: {{game.currentPlayer.symbol}}</span> 
             <span ng-show="game.winner">Winner: {{game.winner.symbol}}</span> 
             <span ng-show="game.isDraw">It is a draw!</span> 
