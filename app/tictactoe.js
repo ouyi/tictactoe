@@ -53,7 +53,7 @@ tictactoe.Game.prototype = {
                 return false;
             } 
         }
-        return (x >= 0 && x < this.rowCount) && (y >= 0 && y < this.colCount);
+        return (x >= 0 && x < this.colCount) && (y >= 0 && y < this.rowCount);
     },
     addMove: function(x, y, player) {
         if (!this.gameOver) {
@@ -78,9 +78,9 @@ tictactoe.Game.prototype = {
         // vertical
         sequences.push(this.board.map(function(value,index) { return value[move.y]; }));
         // diagonal \
-        sequences.push(this.getDiagonalBackSlash(move.x, move.y));
+        sequences.push(this.getDiagonalNwSe(move.x, move.y));
         // diagonal /
-        sequences.push(this.getDiagonalSlash(move.x, move.y));
+        sequences.push(this.getDiagonalSwNe(move.x, move.y));
 
         for (var i = 0; i < sequences.length; i++) {
             var count = 0;
@@ -97,31 +97,40 @@ tictactoe.Game.prototype = {
         }
         return false;
     },
-    getDiagonalBackSlash: function(x, y) {
+    getDiagonalNwSe: function(x, y) {
    
         var res = []; 
-        var i = x - Math.max(this.rowCount, this.colCount) + 1;
-        var j = y - Math.max(this.rowCount, this.colCount) + 1;
+        var i = x - 1;
+        var j = y - 1;
+        while(i >= 0 && j >= 0) {
+            res.unshift(this.board[i][j]); 
+            i--;
+            j--;
+        }
+        i = x;
+        j = y;
         while(i < this.rowCount && j < this.colCount) {
-            if (i >= 0 && j >= 0) {
-                res.push(this.board[i][j]); 
-            } 
+            res.push(this.board[i][j]); 
             i++;
             j++;
         }
         return res;
     },
-    getDiagonalSlash: function(x, y) {
-   
+    getDiagonalSwNe: function(x, y) {
         var res = []; 
-        var i = x - Math.max(this.rowCount, this.colCount) + 1;
-        var j = y + Math.max(this.rowCount, this.colCount) - 1;
-        while(i < this.rowCount && j >= 0 ) {
-            if (i >= 0 && j < this.colCount) {
-                res.push(this.board[i][j]); 
-            } 
+        var i = x + 1;
+        var j = y - 1;
+        while(i < this.rowCount && j >= 0) {
+            res.unshift(this.board[i][j]); 
             i++;
             j--;
+        }
+        i = x;
+        j = y;
+        while(i >= 0 && j < this.colCount) {
+            res.push(this.board[i][j]); 
+            i--;
+            j++;
         }
         return res;
     }
