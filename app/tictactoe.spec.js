@@ -21,37 +21,37 @@ describe('tictactoe isValidMove duplicates check', function() {
 
 describe('tictactoe hasWon vertical scan', function() {
     it('shall return true if one player has a vertical sequence', function() {
-        var game = new tictactoe.Game(3,3);
+        var game = new tictactoe.Game(3,4);
         var player = new tictactoe.Player('x');
         var move = new tictactoe.Move(0, 0, player);
         expect(game.hasWon(move)).toEqual(false);
-        game.addMove(0, 0, player);
+        game.addMove(0, 1, player);
         expect(game.hasWon(move)).toEqual(false);
-        game.addMove(1, 0, player);
+        game.addMove(0, 2, player);
         expect(game.hasWon(move)).toEqual(false);
-        game.addMove(2, 0, player);
+        game.addMove(0, 3, player);
         expect(game.hasWon(move)).toEqual(true);
     });
 });
 
 describe('tictactoe hasWon horizontal scan', function() {
     it('shall return true if one player has a horizontal sequence', function() {
-        var game = new tictactoe.Game(3,3);
+        var game = new tictactoe.Game(3,4);
         var player = new tictactoe.Player('x');
-        var move = new tictactoe.Move(0, 0, player);
+        var move = new tictactoe.Move(0, 3, player);
         expect(game.hasWon(move)).toEqual(false);
-        game.addMove(0, 0, player);
+        game.addMove(0, 3, player);
         expect(game.hasWon(move)).toEqual(false);
-        game.addMove(0, 1, player);
+        game.addMove(1, 3, player);
         expect(game.hasWon(move)).toEqual(false);
-        game.addMove(0, 2, player);
+        game.addMove(2, 3, player);
         expect(game.hasWon(move)).toEqual(true);
     });
 });
 
-describe('tictactoe hasWon diagonal backslash', function() {
+describe('tictactoe hasWon getDiagonalNwSe', function() {
     it('shall return true if one player has won', function() {
-        var game = new tictactoe.Game(3,3);
+        var game = new tictactoe.Game(3,4);
         var player = new tictactoe.Player('x');
         var move = new tictactoe.Move(0, 0, player);
         expect(game.hasWon(move)).toEqual(false);
@@ -63,35 +63,83 @@ describe('tictactoe hasWon diagonal backslash', function() {
         expect(game.hasWon(move)).toEqual(true);
         move = new tictactoe.Move(2, 0, player);
         expect(game.hasWon(move)).toEqual(false);
+        move = new tictactoe.Move(2, 3, player);
+        expect(game.hasWon(move)).toEqual(false);
+    });
+});
+
+describe('tictactoe hasWon getDiagonalSwNe', function() {
+    it('shall return true if one player has won', function() {
+        var game = new tictactoe.Game(3,4);
+        var player = new tictactoe.Player('x');
+        var move = new tictactoe.Move(0, 2, player);
+        expect(game.hasWon(move)).toEqual(false);
+        game.addMove(0, 2, player);
+        expect(game.hasWon(move)).toEqual(false);
+        game.addMove(1, 1, player);
+        expect(game.hasWon(move)).toEqual(false);
+        game.addMove(2, 0, player);
+        expect(game.hasWon(move)).toEqual(true);
+
+        move = new tictactoe.Move(2, 3, player);
+        expect(game.hasWon(move)).toEqual(false);
+        move = new tictactoe.Move(0, 3, player);
+        expect(game.hasWon(move)).toEqual(false);
+
+
+        game = new tictactoe.Game(3,4);
+        player = new tictactoe.Player('x');
+        move = new tictactoe.Move(0, 3, player);
+        expect(game.hasWon(move)).toEqual(false);
+        game.addMove(1, 2, player);
+        expect(game.hasWon(move)).toEqual(false);
+        game.addMove(2, 1, player);
+        expect(game.hasWon(move)).toEqual(false);
+        game.addMove(0, 3, player);
+        expect(game.hasWon(move)).toEqual(true);
+        move = new tictactoe.Move(2, 3, player);
+        expect(game.hasWon(move)).toEqual(false);
+        move = new tictactoe.Move(0, 0, player);
+        expect(game.hasWon(move)).toEqual(false);
     });
 });
 
 describe('tictactoe getDiagonalNwSe', function() {
     it('shall return a diagonal sequence', function() {
-        var game = new tictactoe.Game(4,3);
-        expect(game.getDiagonalNwSe(2, 0)).toEqual([undefined, undefined]);
+        var game = new tictactoe.Game(3,4);
+        expect(game.getDiagonalNwSe(2, 0)).toEqual([undefined]);
+        expect(game.getDiagonalNwSe(1, 2)).toEqual([undefined, undefined, undefined]);
         var player = new tictactoe.Player('x');
         game.addMove(0, 0, player);
         expect(game.getDiagonalNwSe(0, 0)).toEqual([player, undefined, undefined]);
         game.addMove(0, 1, player);
         game.addMove(1, 2, player);
-        expect(game.getDiagonalNwSe(0, 1)).toEqual([player, player]);
-        expect(game.getDiagonalNwSe(1, 0)).toEqual([undefined, undefined, undefined]);
-        expect(game.getDiagonalNwSe(0, 2)).toEqual([undefined]);
+        expect(game.getDiagonalNwSe(0, 1)).toEqual([player, player, undefined]);
+        expect(game.getDiagonalNwSe(1, 0)).toEqual([undefined, undefined]);
+        expect(game.getDiagonalNwSe(0, 2)).toEqual([undefined, undefined]);
+
+        game = new tictactoe.Game(3,4);
+        expect(game.getDiagonalNwSe(2, 0)).toEqual([undefined]);
+        expect(game.getDiagonalNwSe(1, 2)).toEqual([undefined, undefined, undefined]);
+        game.addMove(0, 1, player);
+        game.addMove(1, 2, player);
+        expect(game.getDiagonalNwSe(2, 0)).toEqual([undefined]);
+        expect(game.getDiagonalNwSe(1, 2)).toEqual([player, player, undefined]);
     });
 });
 
 describe('tictactoe getDiagonalSwNe', function() {
     it('shall return a diagonal sequence', function() {
-        var game = new tictactoe.Game(4,3);
+        var game = new tictactoe.Game(3,4);
         expect(game.getDiagonalSwNe(1, 1)).toEqual([undefined, undefined, undefined]);
         var player = new tictactoe.Player('x');
         game.addMove(0, 0, player);
         expect(game.getDiagonalSwNe(0, 0)).toEqual([player]);
         game.addMove(0, 1, player);
         game.addMove(1, 2, player);
-        expect(game.getDiagonalSwNe(0, 1)).toEqual([undefined, player]);
+        expect(game.getDiagonalSwNe(0, 1)).toEqual([player, undefined]);
         expect(game.getDiagonalSwNe(2, 0)).toEqual([undefined, undefined, undefined]);
-        expect(game.getDiagonalSwNe(3, 0)).toEqual([undefined, undefined, player]);
+        expect(game.getDiagonalSwNe(0, 3)).toEqual([undefined, player, undefined]);
+        expect(game.getDiagonalSwNe(1, 3)).toEqual([undefined, undefined]);
     });
 });

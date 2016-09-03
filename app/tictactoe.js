@@ -12,9 +12,9 @@ tictactoe.Move = function(x, y, player) {
     this.player = player;
 }
 
-tictactoe.Game = function(rowCount, colCount) {
-    this.rowCount = rowCount;
+tictactoe.Game = function(colCount, rowCount) {
     this.colCount = colCount;
+    this.rowCount = rowCount;
     this.goalLength = 3;
     this.player0 = new tictactoe.Player('o');
     this.player1 = new tictactoe.Player('x');
@@ -23,9 +23,9 @@ tictactoe.Game = function(rowCount, colCount) {
     this.winner = undefined;
     this.gameOver = false;
     this.isDraw = false;
-    this.board = new Array(this.rowCount);
-    for (var i = 0; i < this.rowCount; i++) {
-        this.board[i] = new Array(this.colCount);
+    this.board = new Array(this.colCount);
+    for (var i = 0; i < this.colCount; i++) {
+        this.board[i] = new Array(this.rowCount);
     }
 };
 tictactoe.Game.prototype = { 
@@ -38,9 +38,9 @@ tictactoe.Game.prototype = {
         this.winner = undefined;
         this.gameOver = false;
         this.isDraw = false;
-        this.board = new Array(this.rowCount);
-        for (var i = 0; i < this.rowCount; i++) {
-            this.board[i] = new Array(this.colCount);
+        this.board = new Array(this.colCount);
+        for (var i = 0; i < this.colCount; i++) {
+            this.board[i] = new Array(this.rowCount);
         }
     },
     isValidMove: function(x, y) {
@@ -73,9 +73,9 @@ tictactoe.Game.prototype = {
     hasWon: function(move) {
 
         var sequences = [];
-        // horizontal
-        sequences.push(this.board[move.x]);
         // vertical
+        sequences.push(this.board[move.x]);
+        // horizontal
         sequences.push(this.board.map(function(value,index) { return value[move.y]; }));
         // diagonal \
         sequences.push(this.getDiagonalNwSe(move.x, move.y));
@@ -109,7 +109,7 @@ tictactoe.Game.prototype = {
         }
         i = x;
         j = y;
-        while(i < this.rowCount && j < this.colCount) {
+        while(i < this.colCount && j < this.rowCount) {
             res.push(this.board[i][j]); 
             i++;
             j++;
@@ -120,15 +120,15 @@ tictactoe.Game.prototype = {
         var res = []; 
         var i = x + 1;
         var j = y - 1;
-        while(i < this.rowCount && j >= 0) {
-            res.unshift(this.board[i][j]); 
+        while(i < this.colCount && j >= 0) {
+            res.push(this.board[i][j]); 
             i++;
             j--;
         }
         i = x;
         j = y;
-        while(i >= 0 && j < this.colCount) {
-            res.push(this.board[i][j]); 
+        while(i >= 0 && j < this.rowCount) {
+            res.unshift(this.board[i][j]); 
             i--;
             j++;
         }
