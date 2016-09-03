@@ -105,7 +105,7 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                 } else {
                     player1 = new tictactoe.Player(symbol);
                 }
-                scope.game = new tictactoe.Game(player0, player1, 3, 4);
+                scope.game = new tictactoe.Game(player0, player1, 3, 3);
 
                 initBoard(scope.board, scope.game, scope.paper, scope.tool);
             }
