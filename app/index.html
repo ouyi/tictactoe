@@ -8,6 +8,15 @@
     <div class="centered">
         <div>
             <form>
+                <span>Choose your opponent</span> 
+                <label>
+                    <input type="radio" ng-model="board.opponent" value="c">Computer
+                </label>
+                <label>
+                    <input type="radio" ng-model="board.opponent" value="h">Human
+                </label>
+            </form>
+            <form>
                 <span>Choose your symbol</span> 
                 <label>
                     <input type="radio" ng-model="board.symbol" value="o">O

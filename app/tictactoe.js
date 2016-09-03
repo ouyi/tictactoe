@@ -7,12 +7,14 @@ tictactoe.Player = function(symbol) {
 }
 
 tictactoe.PlayerRand = function(symbol) {
-    tictactoe.player.call(this, symbol);
+    tictactoe.Player.call(this, symbol);
 }
 tictactoe.PlayerRand.prototype = Object.create(tictactoe.Player.prototype, {
-    nextCell: function(game) {
-        var cells = game.availCells();
-        return cells[Math.floor(Math.random() * cells.length)];
+    nextCell: {
+        value: function(game) {
+            var cells = game.availCells();
+            return cells[Math.floor(Math.random() * cells.length)];
+        }
     }
 });
 tictactoe.PlayerRand.prototype.constructor = tictactoe.PlayerRand;
@@ -80,7 +82,7 @@ tictactoe.Game.prototype = {
         }
     },
     availCells: function() {
-        res = [];
+        var res = [];
         for (var x = 0; x < this.board.length; x++) {
             for (var y = 0; y < this.board[x].length; y++) {
                 if (this.board[x][y] === undefined) {

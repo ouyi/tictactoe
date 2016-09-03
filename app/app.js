@@ -6,6 +6,7 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
 
     var boardCanvas = angular.element( document.querySelector( '#boardCanvas' ) )[0];
     scope.board = {
+        opponent: 'c',
         symbol: 'o',
         timeToStart: 3000,
         width: boardCanvas.width,
@@ -20,7 +21,7 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
         }
     };
 
-    scope.$watch('board.symbol', function(value) {
+    scope.$watch('[board.opponent, board.symbol]', function(value) {
         scope.reset();
     });
 
@@ -66,8 +67,7 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                 tool.onMouseDown = function(event) {
                     var cellX = Math.floor((event.point.x - board.borderSize) / cellLengthX);
                     var cellY = Math.floor((event.point.y - board.borderSize) / cellLengthY);
-                    logger.log(cellX);
-                    logger.log(cellY);
+                    logger.log(cellX + ',' + cellY);
                     if (!game.gameOver && game.isValidMove(cellX, cellY)) {
                         makeSymbol((cellX + 0.5) * cellLengthX, (cellY + 0.5) * cellLengthY, game.currentPlayer.symbol);
                         scope.$apply(function() {
@@ -75,7 +75,8 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                             if (game.gameOver) {
                                 timer(scope.reset, board.timeToStart);
                             } else if (game.currentPlayer instanceof tictactoe.PlayerRand) {
-                                var c = game.currentPlayer.nextCell();
+                                var c = game.currentPlayer.nextCell(game);
+                                makeSymbol((c.x + 0.5) * cellLengthX, (c.y + 0.5) * cellLengthY, game.currentPlayer.symbol);
                                 game.addMove(c.x, c.y, game.currentPlayer);
                                 if (game.gameOver) {
                                     timer(scope.reset, board.timeToStart);
@@ -97,7 +98,13 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                 }
                 scope.paper.project.activeLayer.removeChildren();
                 var player0 = new tictactoe.Player(scope.board.symbol);
-                var player1 = new tictactoe.Player(player0.symbol === 'o' ? 'x' : 'o');
+                var symbol = player0.symbol === 'o' ? 'x' : 'o'
+                var player1;
+                if (scope.board.opponent === 'c') {
+                    player1 = new tictactoe.PlayerRand(symbol);
+                } else {
+                    player1 = new tictactoe.Player(symbol);
+                }
                 scope.game = new tictactoe.Game(player0, player1, 3, 4);
 
                 initBoard(scope.board, scope.game, scope.paper, scope.tool);
