@@ -6,6 +6,17 @@ tictactoe.Player = function(symbol) {
     this.symbol = symbol;
 }
 
+tictactoe.PlayerRand = function(symbol) {
+    tictactoe.player.call(this, symbol);
+}
+tictactoe.PlayerRand.prototype = Object.create(tictactoe.Player.prototype, {
+    nextCell: function(game) {
+        var cells = game.availCells();
+        return cells[Math.floor(Math.random() * cells.length)];
+    }
+});
+tictactoe.PlayerRand.prototype.constructor = tictactoe.PlayerRand;
+
 tictactoe.Move = function(x, y, player) {
     this.x = x;
     this.y = y;
@@ -67,6 +78,17 @@ tictactoe.Game.prototype = {
             }
             this.currentPlayer = this.getOpponent(player);
         }
+    },
+    availCells: function() {
+        res = [];
+        for (var x = 0; x < this.board.length; x++) {
+            for (var y = 0; y < this.board[x].length; y++) {
+                if (this.board[x][y] === undefined) {
+                    res.push({x: x, y: y});
+                }
+            }
+        }
+        return res;
     },
     hasWon: function(move) {
 

@@ -74,6 +74,12 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                             game.addMove(cellX, cellY, game.currentPlayer);
                             if (game.gameOver) {
                                 timer(scope.reset, board.timeToStart);
+                            } else if (game.currentPlayer instanceof tictactoe.PlayerRand) {
+                                var c = game.currentPlayer.nextCell();
+                                game.addMove(c.x, c.y, game.currentPlayer);
+                                if (game.gameOver) {
+                                    timer(scope.reset, board.timeToStart);
+                                }
                             }
                         });
                     }
