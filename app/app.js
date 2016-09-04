@@ -67,37 +67,35 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                 function makeSymbol(x, y, symbol) {
                     var fontSize = board.textStyle.fontSize;
                     var vector = new paper.Point(board.borderSize, board.borderSize + fontSize / 4);
-                    var text = new paper.PointText(new paper.Point(x, y).add(vector));
+                    var text = new paper.PointText(new paper.Point((x + 0.5) * cellLengthX, (y + 0.5) * cellLengthY).add(vector));
                     text.content = symbol;
                     text.style = board.textStyle;
                 }
 
                 // init tool once so that event handling works after start() without being hidden by the previous tool 
                 tool.onMouseDown = function(event) {
+
+                    function playOneMove(x, y, game, board) {
+                        makeSymbol(x, y, game.currentPlayer.symbol);
+                        game.addMove(x, y, game.currentPlayer);
+                        if (game.gameOver) {
+                            board.gameCount++;
+                            if (game.isDraw) {
+                                board.drawCount++;
+                            }
+                            timer(scope.start, board.timeToStart);
+                        } 
+                    }
+
                     var cellX = Math.floor((event.point.x - board.borderSize) / cellLengthX);
                     var cellY = Math.floor((event.point.y - board.borderSize) / cellLengthY);
                     logger.log(cellX + ',' + cellY);
                     if (!game.gameOver && game.isValidMove(cellX, cellY)) {
                         scope.$apply(function() {
-                            makeSymbol((cellX + 0.5) * cellLengthX, (cellY + 0.5) * cellLengthY, game.currentPlayer.symbol);
-                            game.addMove(cellX, cellY, game.currentPlayer);
-                            if (game.gameOver) {
-                                board.gameCount++;
-                                if (game.isDraw) {
-                                    board.drawCount++;
-                                }
-                                timer(scope.start, board.timeToStart);
-                            } else if (game.currentPlayer instanceof tictactoe.PlayerRand) {
+                            playOneMove(cellX, cellY, game, board); 
+                            if (!game.gameOver && game.currentPlayer instanceof tictactoe.PlayerRand) {
                                 var c = game.currentPlayer.nextCell(game);
-                                makeSymbol((c.x + 0.5) * cellLengthX, (c.y + 0.5) * cellLengthY, game.currentPlayer.symbol);
-                                game.addMove(c.x, c.y, game.currentPlayer);
-                                if (game.gameOver) {
-                                    board.gameCount++;
-                                    if (game.isDraw) {
-                                        board.drawCount++;
-                                    }
-                                    timer(scope.start, board.timeToStart);
-                                }
+                                playOneMove(c.x, c.y, game, board); 
                             }
                         });
                     }
