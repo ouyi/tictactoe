@@ -33,18 +33,10 @@ tictactoe.Game = function(player0, player1, colCount = 3, rowCount = 3, goalLeng
     this.rowCount = rowCount;
     this.goalLength = goalLength;
 
-    this.currentPlayer = this.player0;
-    this.moves = [];
-    this.winner = undefined;
-    this.gameOver = false;
-    this.isDraw = false;
-    this.board = new Array(this.colCount);
-    for (var i = 0; i < this.colCount; i++) {
-        this.board[i] = new Array(this.rowCount);
-    }
+    this.init();
 };
 tictactoe.Game.prototype = { 
-    reset: function() {
+    init: function() {
         this.currentPlayer = this.player0;
         this.moves = [];
         this.winner = undefined;
