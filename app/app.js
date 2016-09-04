@@ -6,6 +6,11 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
 
     var boardCanvas = angular.element( document.querySelector( '#boardCanvas' ) )[0];
     scope.board = {
+        gameCount: 0,
+        drawCount: 0,
+        player0: undefined,
+        player1: undefined,
+        started: false,
         colCount: 3,
         rowCount: 3,
         goalLength: 3,
@@ -26,7 +31,7 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
 
 /*
     scope.$watch('[board.opponent, board.symbol]', function(value) {
-        scope.reset();
+        scope.start();
     });
 */
 
@@ -68,23 +73,31 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                     text.style = board.textStyle;
                 }
 
-                // init tool once so that event handling works after reset without being hidden by the previous tool 
+                // init tool once so that event handling works after start() without being hidden by the previous tool 
                 tool.onMouseDown = function(event) {
                     var cellX = Math.floor((event.point.x - board.borderSize) / cellLengthX);
                     var cellY = Math.floor((event.point.y - board.borderSize) / cellLengthY);
                     logger.log(cellX + ',' + cellY);
                     if (!game.gameOver && game.isValidMove(cellX, cellY)) {
-                        makeSymbol((cellX + 0.5) * cellLengthX, (cellY + 0.5) * cellLengthY, game.currentPlayer.symbol);
                         scope.$apply(function() {
+                            makeSymbol((cellX + 0.5) * cellLengthX, (cellY + 0.5) * cellLengthY, game.currentPlayer.symbol);
                             game.addMove(cellX, cellY, game.currentPlayer);
                             if (game.gameOver) {
-                                timer(scope.reset, board.timeToStart);
+                                board.gameCount++;
+                                if (game.isDraw) {
+                                    board.drawCount++;
+                                }
+                                timer(scope.start, board.timeToStart);
                             } else if (game.currentPlayer instanceof tictactoe.PlayerRand) {
                                 var c = game.currentPlayer.nextCell(game);
                                 makeSymbol((c.x + 0.5) * cellLengthX, (c.y + 0.5) * cellLengthY, game.currentPlayer.symbol);
                                 game.addMove(c.x, c.y, game.currentPlayer);
                                 if (game.gameOver) {
-                                    timer(scope.reset, board.timeToStart);
+                                    board.gameCount++;
+                                    if (game.isDraw) {
+                                        board.drawCount++;
+                                    }
+                                    timer(scope.start, board.timeToStart);
                                 }
                             }
                         });
@@ -94,7 +107,7 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                 paper.view.draw();
             };
             
-            scope.reset = function() {
+            scope.start = function() {
                 if (!scope.paper) {
                     scope.paper = new paper.PaperScope();
                     // it seems that this line changes the element width and height
@@ -102,19 +115,22 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                     scope.tool = new paper.Tool();
                 }
                 scope.paper.project.activeLayer.removeChildren();
-                var player0 = new tictactoe.Player(scope.board.symbol);
-                var symbol = player0.symbol === 'o' ? 'x' : 'o'
-                var player1;
-                if (scope.board.opponent === 'c') {
-                    player1 = new tictactoe.PlayerRand(symbol);
-                } else {
-                    player1 = new tictactoe.Player(symbol);
+
+                if (!scope.board.player0 || !scope.board.player1) {
+                    scope.board.player0 = new tictactoe.Player(scope.board.symbol);
+                    var symbol = scope.board.player0.symbol === 'o' ? 'x' : 'o'
+                    if (scope.board.opponent === 'c') {
+                        scope.board.player1 = new tictactoe.PlayerRand(symbol);
+                    } else {
+                        scope.board.player1 = new tictactoe.Player(symbol);
+                    }
                 }
-                scope.game = new tictactoe.Game(player0, player1, scope.board.colCount, scope.board.rowCount, scope.board.goalLength);
+                scope.game = new tictactoe.Game(scope.board.player0, scope.board.player1, scope.board.colCount, scope.board.rowCount, scope.board.goalLength);
 
                 initBoard(scope.board, scope.game, scope.paper, scope.tool);
+                scope.board.started = true;
             }
-            //scope.reset();
+            //scope.start();
         }
     };
 }]);

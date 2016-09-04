@@ -4,6 +4,7 @@ var tictactoe = tictactoe || {};
 
 tictactoe.Player = function(symbol) {
     this.symbol = symbol;
+    this.winCount = 0;
 }
 
 tictactoe.PlayerRand = function(symbol) {
@@ -74,6 +75,7 @@ tictactoe.Game.prototype = {
             if(this.hasWon(move)) {
                 this.gameOver = true;
                 this.winner = move.player; 
+                move.player.winCount++;
             } else if (this.moves.length == this.rowCount * this.colCount) {
                 this.gameOver = true;
                 this.isDraw = true;
