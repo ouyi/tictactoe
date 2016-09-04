@@ -1,24 +1,20 @@
 .outer-div {
     width: 800px;
     height: 600px;
-    background-color: coral;
-    color: white;
 }
 .inner-div{
     width: 500px;
     height: 600px;
-    background-color: green;
-    color: white;
 }
 .board{
-    width: 400px;
-    height: 400px;
+    width: 440px;
+    height: 440px;
+    border: 5px double;
 }
 .pannel{
-    width: 400px;
-    height: 200px;
-    background-color: orange;
-    color: white;
+    width: 440px;
+    height: 130px;
+    border: 1px solid;
 }
 .bot-centered {
     position: absolute;
@@ -37,4 +33,19 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
+}
+#settings {
+    width: 400px;
+    height: 150px;
+    text-align: center;
+}
+#stats {
+    width: 400px;
+    height: 100px;
+    text-align: center;
+}
+#logo {
+    width: 400px;
+    height: 50px;
+    text-align: center;
 }

@@ -19,7 +19,7 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
         timeToStart: 3000,
         width: boardCanvas.width,
         height: boardCanvas.height,
-        borderSize: 5,
+        borderSize: 0,
         textStyle: {
             fontFamily: 'Arial',
             fontWeight: 'bold',
