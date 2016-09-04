@@ -17,6 +17,7 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
         opponent: 'c',
         symbol: 'o',
         timeToStart: 3000,
+        aiDelay: 1000,
         width: boardCanvas.width,
         height: boardCanvas.height,
         borderSize: 0,
@@ -95,7 +96,9 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                             playOneMove(cellX, cellY, game, board); 
                             if (!game.gameOver && game.currentPlayer instanceof tictactoe.PlayerRand) {
                                 var c = game.currentPlayer.nextCell(game);
-                                playOneMove(c.x, c.y, game, board); 
+                                timer(function() {
+                                    playOneMove(c.x, c.y, game, board); 
+                                }, board.aiDelay);
                             }
                         });
                     }
