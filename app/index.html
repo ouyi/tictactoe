@@ -19,15 +19,15 @@
                         <input type="radio" ng-model="board.symbol" value="x">x
                     </div>
                     <div>Set board size:
-                        <input type="number" name="rows" ng-model="board.rowCount" required min="2" max="99" placeholder="rows">
+                        <input type="number" name="rows" ng-model="board.rowCount" required min="2" max="20" placeholder="rows">
                         x
-                        <input type="number" name="cols" ng-model="board.colCount" required min="2" max="99" placeholder="cols">
+                        <input type="number" name="cols" ng-model="board.colCount" required min="2" max="20" placeholder="cols">
                     </div>
                     <div>Set goal length:
-                        <input type="number" name="goal" ng-model="board.goalLength" required min="2" max="99">
+                        <input type="number" name="goal" ng-model="board.goalLength" required min="2" max="20">
                     </div>
                     <div>
-                        <input type="submit" ng-click="start()" value="Start!" ng-disabled="configForm.$invalid"/>
+                        <h1><input type="submit" value="Start playing!" class="submit-button" ng-click="start()" ng-disabled="configForm.$invalid" ></h1>
                     </div>
                 </form>
                 </div>
@@ -53,9 +53,11 @@
                         <div>Player {{board.player1.symbol}}: {{board.player1.winCount}}</div>
                     </div>
                     <div>
+                        <h3>
                         <span ng-hide="game.gameOver">Current player: {{game.currentPlayer.symbol}}</span> 
                         <span ng-show="game.winner">Winner: {{game.winner.symbol}}</span> 
-                        <span ng-show="game.isDraw">It is a draw!</span> 
+                        <span ng-show="game.isDraw">It's a draw!</span> 
+                        </h3>
                     </div>
                 </div>
             </div>

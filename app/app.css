@@ -9,7 +9,10 @@
 .board{
     width: 440px;
     height: 440px;
-    border: 5px double;
+    box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    border-radius: 10px;
+    background-color: rgb(0,60,0);
+    color: white;
 }
 .pannel{
     width: 440px;
@@ -37,14 +40,23 @@
     width: 400px;
     height: 150px;
     text-align: center;
+    font-family: 'Architects Daughter', cursive;
 }
 #stats {
     width: 400px;
     height: 100px;
     text-align: center;
+    font-family: 'Architects Daughter', cursive;
 }
 #logo {
     vertical-align: middle;
     text-align: center;
     font-family: 'Architects Daughter', cursive;
+}
+input.submit-button {
+    font-family: 'Architects Daughter', cursive;
+    font-size: 20px;
+    color: black;
+    background-color: rgb(0,60,0);
+    color: white;
 }

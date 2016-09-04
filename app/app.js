@@ -21,10 +21,9 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
         height: boardCanvas.height,
         borderSize: 0,
         textStyle: {
-            fontFamily: 'Arial',
-            fontWeight: 'bold',
-            fontSize: 80,
-            fillColor: 'black',
+            fontFamily: '"Architects Daughter", cursive',
+            fontSize: 50,
+            fillColor: 'white',
             justification: 'center'
         }
     };
@@ -53,7 +52,7 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                     var start = new paper.Point(x1, y1).add(vector);
                     var end = new paper.Point(x2, y2).add(vector);
                     var path = new paper.Path(start, end);
-                    path.strokeColor = 'black';
+                    path.strokeColor = 'white';
                 };
 
                 // horizontal
