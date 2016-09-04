@@ -155,3 +155,6 @@ tictactoe.Game.prototype = {
     }
 };
 
+exports.Player = tictactoe.Player;
+exports.PlayerRand = tictactoe.PlayerRand;
+exports.Game = tictactoe.Game;
