@@ -6,6 +6,9 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
 
     var boardCanvas = angular.element( document.querySelector( '#boardCanvas' ) )[0];
     scope.board = {
+        colCount: 3,
+        rowCount: 3,
+        goalLength: 3,
         opponent: 'c',
         symbol: 'o',
         timeToStart: 3000,
@@ -21,9 +24,11 @@ app.controller('MainCtrl', ['$scope', '$log', function(scope, logger) {
         }
     };
 
+/*
     scope.$watch('[board.opponent, board.symbol]', function(value) {
         scope.reset();
     });
+*/
 
 }]);
 
@@ -105,11 +110,11 @@ app.directive('t3board', ['$timeout', '$log', function(timer, logger) {
                 } else {
                     player1 = new tictactoe.Player(symbol);
                 }
-                scope.game = new tictactoe.Game(player0, player1, 3, 3);
+                scope.game = new tictactoe.Game(player0, player1, scope.board.colCount, scope.board.rowCount, scope.board.goalLength);
 
                 initBoard(scope.board, scope.game, scope.paper, scope.tool);
             }
-            scope.reset();
+            //scope.reset();
         }
     };
 }]);

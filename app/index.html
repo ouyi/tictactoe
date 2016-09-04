@@ -8,23 +8,28 @@
     <div class="centered">
         <div>
             <form>
-                <span>Choose your opponent</span> 
-                <label>
+                <div>Choose your opponent:
                     <input type="radio" ng-model="board.opponent" value="c">computer
-                </label>
-                <label>
                     <input type="radio" ng-model="board.opponent" value="h">human
-                </label>
-            </form>
-            <form>
-                <span>Choose your symbol</span> 
-                <label>
+                </div>
+                <div>Choose your symbol:
                     <input type="radio" ng-model="board.symbol" value="o">o
-                </label>
-                <label>
                     <input type="radio" ng-model="board.symbol" value="x">x
-                </label>
+                </div>
+                <div>Set board rows and columns:
+                    <input type="number" name="rows" ng-model="board.rowCount" required ng-trim="true">
+                    x
+                    <input type="number" name="cols" ng-model="board.colCount" required ng-trim="true">
+                </div>
+                <div>Set goal length:
+                    <input type="number" name="cols" ng-model="board.goalLength" required ng-trim="true">
+                </div>
+                <div>
+                    <input type="submit" ng-click="reset()" value="Start!" />
+                </div>
             </form>
+        </div>
+        <div>
             <span ng-hide="game.gameOver">Current player: {{game.currentPlayer.symbol}}</span> 
             <span ng-show="game.winner">Winner: {{game.winner.symbol}}</span> 
             <span ng-show="game.isDraw">It is a draw!</span> 

@@ -26,11 +26,11 @@ tictactoe.Move = function(x, y, player) {
 }
 
 tictactoe.Game = function(player0, player1, colCount = 3, rowCount = 3, goalLength = 3) {
+    this.player0 = player0;
+    this.player1 = player1;
     this.colCount = colCount;
     this.rowCount = rowCount;
     this.goalLength = goalLength;
-    this.player0 = player0;
-    this.player1 = player1;
 
     this.currentPlayer = this.player0;
     this.moves = [];
