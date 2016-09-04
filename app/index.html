@@ -4,47 +4,53 @@
     <link rel="stylesheet" href="app.css">
 </head>
 <body ng-controller="MainCtrl">
-
-    <div class="centered">
-        <div ng-hide="board.started">
-            <form>
-                <div>Choose your opponent:
-                    <input type="radio" ng-model="board.opponent" value="c">computer
-                    <input type="radio" ng-model="board.opponent" value="h">human
-                </div>
-                <div>Choose your symbol:
-                    <input type="radio" ng-model="board.symbol" value="o">o
-                    <input type="radio" ng-model="board.symbol" value="x">x
-                </div>
-                <div>Set board rows and columns:
-                    <input type="number" name="rows" ng-model="board.rowCount" required ng-trim="true">
-                    x
-                    <input type="number" name="cols" ng-model="board.colCount" required ng-trim="true">
-                </div>
-                <div>Set goal length:
-                    <input type="number" name="cols" ng-model="board.goalLength" required ng-trim="true">
+    <div class="centered outer-div">
+        <div class="centered inner-div" ng-hide="board.started">
+            <div class="top-centered board">
+                <form name="configForm">
+                    <div>Choose your opponent:
+                        <input type="radio" ng-model="board.opponent" value="c">computer
+                        <input type="radio" ng-model="board.opponent" value="h">human
+                    </div>
+                    <div>Choose your symbol:
+                        <input type="radio" ng-model="board.symbol" value="o">o
+                        <input type="radio" ng-model="board.symbol" value="x">x
+                    </div>
+                    <div>Set board size:
+                        <input type="number" name="rows" ng-model="board.rowCount" required min="2" max="99" placeholder="rows">
+                        x
+                        <input type="number" name="cols" ng-model="board.colCount" required min="2" max="99" placeholder="cols">
+                    </div>
+                    <div>Set goal length:
+                        <input type="number" name="goal" ng-model="board.goalLength" required min="2" max="99">
+                    </div>
+                    <div>
+                        <input type="submit" ng-click="start()" value="Start!" ng-disabled="configForm.$invalid"/>
+                    </div>
+                </form>
+            </div>
+            <div class="bot-centered pannel">
+Start!
+            </div>
+        </div>
+        <div class="centered inner-div" ng-show="board.started">
+            <div class="top-centered board">
+                <canvas id="boardCanvas" t3board width="400" height="400"></canvas>
+            </div>
+            <div class="bot-centered pannel">
+                <div>
+                    <span ng-hide="game.gameOver">Current player: {{game.currentPlayer.symbol}}</span> 
+                    <span ng-show="game.winner">Winner: {{game.winner.symbol}}</span> 
+                    <span ng-show="game.isDraw">It is a draw!</span> 
                 </div>
                 <div>
-                    <input type="submit" ng-click="start()" value="Start!" />
+                    <label>Games played: {{board.gameCount}}</label>
                 </div>
-            </form>
-        </div>
-        <div ng-show="board.started">
-            <div>
-                <span ng-hide="game.gameOver">Current player: {{game.currentPlayer.symbol}}</span> 
-                <span ng-show="game.winner">Winner: {{game.winner.symbol}}</span> 
-                <span ng-show="game.isDraw">It is a draw!</span> 
-            </div>
-            <div>
-                <label>Games played: {{board.gameCount}}</label>
-            </div>
-            <div>
-                <label>Draws: {{board.drawCount}}</label>
-                <label>Wins({{board.player0.symbol}}): {{board.player0.winCount}}</label>
-                <label>Wins({{board.player1.symbol}}): {{board.player1.winCount}}</label>
-            </div>
-            <div>
-                <canvas id="boardCanvas" t3board width="500" height="500"></canvas>
+                <div>
+                    <label>Draws: {{board.drawCount}}</label>
+                    <label>Wins({{board.player0.symbol}}): {{board.player0.winCount}}</label>
+                    <label>Wins({{board.player1.symbol}}): {{board.player1.winCount}}</label>
+                </div>
             </div>
         </div>
     </div>

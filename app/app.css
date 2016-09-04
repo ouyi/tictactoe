@@ -1,13 +1,40 @@
-#boardCanvas {
-    border: 5px;
-    border-style: double;
-    box-shadow: 3px 3px 2px #888888;
+.outer-div {
+    width: 800px;
+    height: 600px;
+    background-color: coral;
+    color: white;
 }
-
+.inner-div{
+    width: 500px;
+    height: 600px;
+    background-color: green;
+    color: white;
+}
+.board{
+    width: 400px;
+    height: 400px;
+}
+.pannel{
+    width: 400px;
+    height: 200px;
+    background-color: orange;
+    color: white;
+}
+.bot-centered {
+    position: absolute;
+    bottom: 0%;
+    left: 50%;
+    transform: translate(-50%,0%);
+}
+.top-centered {
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%,0%);
+}
 .centered {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
